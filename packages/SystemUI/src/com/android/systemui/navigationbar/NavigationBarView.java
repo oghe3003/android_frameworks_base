@@ -146,6 +146,7 @@ public class NavigationBarView extends FrameLayout implements
     private final NavigationBarTransitions mBarTransitions;
     private final OverviewProxyService mOverviewProxyService;
     private AutoHideController mAutoHideController;
+    private boolean mBlockedGesturalNavigation;
 
     // performs manual animation in sync with layout transitions
     private final NavTransitionListener mTransitionListener = new NavTransitionListener();
@@ -861,11 +862,11 @@ public class NavigationBarView extends FrameLayout implements
 
         mSysUiFlagContainer.setFlag(SYSUI_STATE_SCREEN_PINNING,
                         ActivityManagerWrapper.getInstance().isScreenPinningActive())
-                .setFlag(SYSUI_STATE_OVERVIEW_DISABLED,
+                .setFlag(SYSUI_STATE_OVERVIEW_DISABLED, mBlockedGesturalNavigation ||
                         (mDisabledFlags & View.STATUS_BAR_DISABLE_RECENT) != 0)
-                .setFlag(SYSUI_STATE_HOME_DISABLED,
+                .setFlag(SYSUI_STATE_HOME_DISABLED, mBlockedGesturalNavigation ||
                         (mDisabledFlags & View.STATUS_BAR_DISABLE_HOME) != 0)
-                .setFlag(SYSUI_STATE_SEARCH_DISABLED,
+                .setFlag(SYSUI_STATE_SEARCH_DISABLED, mBlockedGesturalNavigation ||
                         (mDisabledFlags & View.STATUS_BAR_DISABLE_SEARCH) != 0)
                 .commitUpdate(displayId);
     }
@@ -880,7 +881,7 @@ public class NavigationBarView extends FrameLayout implements
                 Log.d(TAG, "Updating panel sysui state flags: fullyExpanded="
                         + mPanelView.isFullyExpanded() + " inQs=" + mPanelView.isInSettings());
             }
-            mSysUiFlagContainer.setFlag(SYSUI_STATE_NOTIFICATION_PANEL_EXPANDED,
+            mSysUiFlagContainer.setFlag(SYSUI_STATE_NOTIFICATION_PANEL_EXPANDED, mBlockedGesturalNavigation ||
                     mPanelView.isFullyExpanded() && !mPanelView.isInSettings())
                     .setFlag(SYSUI_STATE_QUICK_SETTINGS_EXPANDED,
                             mPanelView.isInSettings())
@@ -902,6 +903,12 @@ public class NavigationBarView extends FrameLayout implements
         WindowManagerWrapper.getInstance().setNavBarVirtualKeyHapticFeedbackEnabled(!showSwipeUpUI);
         getHomeButton().setAccessibilityDelegate(
                 showSwipeUpUI ? mQuickStepAccessibilityDelegate : null);
+    }
+
+    public void setBlockedGesturalNavigation(boolean blocked) {
+        mBlockedGesturalNavigation = blocked;
+        updateDisabledSystemUiStateFlags();
+        updatePanelSystemUiStateFlags();
     }
 
     /**

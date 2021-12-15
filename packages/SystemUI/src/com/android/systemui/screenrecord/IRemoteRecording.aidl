@@ -3,7 +3,7 @@ package com.android.systemui.screenrecord;
 import com.android.systemui.screenrecord.IRecordingCallback;
 
 interface IRemoteRecording {
-    void startRecording();
+    void startRecording(int audioSource, boolean showTaps);
     void stopRecording();
     boolean isRecording();
     boolean isStarting();

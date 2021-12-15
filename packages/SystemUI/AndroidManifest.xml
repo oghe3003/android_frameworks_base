@@ -179,6 +179,11 @@
     <!-- Self permission for internal broadcasts. -->
     <permission android:name="com.android.systemui.permission.SELF"
             android:protectionLevel="signature" />
+    
+    <!-- Adding Screen Recording -->
+    <permission android:name="com.android.systemui.permission.SCREEN_RECORDING"
+            android:protectionLevel="signature" />
+
     <uses-permission android:name="com.android.systemui.permission.SELF" />
 
     <permission android:name="com.android.systemui.permission.PLUGIN"
