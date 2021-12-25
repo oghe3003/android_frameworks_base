@@ -7439,6 +7439,7 @@ message MetricsEvent {
     // Nusantara constant
     NUSANTARA_PRJ = 2021;
     NUSANTARA_TILE = 2022;
+    NUSANTARA_SETTINGS = 4000;
 
     // Panel for Mobile Data
     PANEL_MOBILE_DATA = 2223;
