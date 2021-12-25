@@ -956,5 +956,9 @@
             </intent-filter>
         </activity>
 
+        <!-- FPS Info -->
+        <service android:name=".FPSInfoService"
+                android:exported="false" />
+
     </application>
 </manifest>
